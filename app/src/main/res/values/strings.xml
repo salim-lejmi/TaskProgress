@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TrackProgress</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="signup_text">Do not have an account? Click here to sign up</string>
+    <string name="btnLogin">LogIn</string>
+    <string name="btnSignUp">SignUp</string>
 </resources>
