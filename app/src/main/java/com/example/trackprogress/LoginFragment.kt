@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
+import at.favre.lib.crypto.bcrypt.BCrypt
+import com.example.trackprogress.Database.AppDatabase
+import com.example.trackprogress.Database.UserCredentials
 
 class LoginFragment : Fragment() {
 
@@ -58,5 +60,17 @@ class LoginFragment : Fragment() {
             return false
         }
         return true
+    }
+
+    //Continue form here **********************
+    fun adminExists(): Boolean{
+        return true
+    }
+    suspend fun createAdmin(){
+        val adminUserName = "Admin"
+        val adminPassword = BCrypt.withDefaults().hashToString(12,"DefaultAdmin".toCharArray())
+
+        val userCredsDao = AppDatabase.getInstance(requireContext()).userCredsDao()
+        userCredsDao.insertUserCredentials(UserCredentials(adminUserName, adminPassword))
     }
 }
