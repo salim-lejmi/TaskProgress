@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primary_background"
     tools:context=".LoginFragment">
 
 
@@ -12,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_margin="16dp"
+        android:backgroundTint="@color/secondary_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,13 +25,15 @@
 
             <TextView
                 android:id="@+id/loginTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/btnLogin"
+                android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="40dp"
                 android:textColor="@color/black"
+                android:background="@color/primary_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -67,22 +71,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:text="@string/btnLogin"
-                android:backgroundTint="@color/black"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:backgroundTint="@color/primary_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edtLoginPassword" />
 
-            <TextView
-                android:id="@+id/txtSignUp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/signup_text"
-                android:textColor="@color/text_blue"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
