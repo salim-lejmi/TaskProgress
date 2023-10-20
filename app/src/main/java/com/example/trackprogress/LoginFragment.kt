@@ -13,11 +13,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import at.favre.lib.crypto.bcrypt.BCrypt
+import com.example.trackprogress.Admin.AdminMainActivity
 import com.example.trackprogress.Database.AppDatabase
 import com.example.trackprogress.Database.User
 import com.example.trackprogress.Database.UserCredentials
-import com.example.trackprogress.Database.UserCredsDAO
 import com.example.trackprogress.Database.UserType
+import com.example.trackprogress.Employee.EmployeeMainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -71,14 +72,14 @@ class LoginFragment : Fragment() {
                              editor.putString(getString(R.string.Cred_ID),uname)
                              if(user?.userType == UserType.ADMIN){
                                  editor.putString(getString(R.string.User_Type),getString(R.string.admin))
+                                 val intent = Intent(context, AdminMainActivity::class.java)
+                                 startActivity(intent)
                              }else{
                                  editor.putString(getString(R.string.User_Type),getString(R.string.employee))
+                                 val intent = Intent(context, EmployeeMainActivity::class.java)
+                                 startActivity(intent)
                              }
                              editor.commit()
-                             Log.d("UserType", "User type is: ${user?.userType}")
-
-                             val intent = Intent(context,MainActivity::class.java)
-                             startActivity(intent)
                          }else{
                              activity?.runOnUiThread{
                                  Toast.makeText(requireContext(),"Invalid Password",Toast.LENGTH_SHORT).show()

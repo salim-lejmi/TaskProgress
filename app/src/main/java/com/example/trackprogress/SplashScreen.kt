@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.ImageView
+import com.example.trackprogress.Admin.AdminMainActivity
 
 class SplashScreen : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
@@ -29,7 +30,7 @@ class SplashScreen : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed(
             {
                 if(isLogIn){
-                    var intent = Intent(this,MainActivity::class.java)
+                    var intent = Intent(this, AdminMainActivity::class.java)
                     startActivity(intent)
                 }
                 else{
