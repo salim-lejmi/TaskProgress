@@ -74,10 +74,12 @@ class LoginFragment : Fragment() {
                                  editor.putString(getString(R.string.User_Type),getString(R.string.admin))
                                  val intent = Intent(context, AdminMainActivity::class.java)
                                  startActivity(intent)
+                                 activity?.finish()
                              }else{
                                  editor.putString(getString(R.string.User_Type),getString(R.string.employee))
                                  val intent = Intent(context, EmployeeMainActivity::class.java)
                                  startActivity(intent)
+                                 activity?.finish()
                              }
                              editor.commit()
                          }else{

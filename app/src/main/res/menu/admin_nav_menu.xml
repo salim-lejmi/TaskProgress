@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/addEmployee"
+        android:icon="@drawable/add_employee"
+        android:title=""/>
+    <item
+        android:id="@+id/assignTask"
+        android:icon="@drawable/assign_task"
+        android:title=""/>
+    <item
+        android:id="@+id/employeeList"
+        android:icon="@drawable/employee_list"
+        android:title=""
+        />
+    <item
+        android:id="@+id/logOut"
+        android:icon="@drawable/baseline_logout_24"
+        android:title=""/>
+</menu>

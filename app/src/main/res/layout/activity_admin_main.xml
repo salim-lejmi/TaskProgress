@@ -10,11 +10,20 @@
     <FrameLayout
         android:id="@+id/adminFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="670dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomAdminNavMenu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomAdminNavMenu"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:scrollIndicators="left"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/admin_nav_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
