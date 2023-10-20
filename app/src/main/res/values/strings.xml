@@ -5,4 +5,10 @@
     <string name="signup_text">Do not have an account? Click here to sign up</string>
     <string name="btnLogin">LogIn</string>
     <string name="btnSignUp">SignUp</string>
+    <string name="SharedPref">Shared_Pref</string>
+    <string name="Cred_Pref">SignInSharedPref</string>
+    <string name="Cred_ID">UserNameSharedPref</string>
+    <string name="User_Type">UserType</string>
+    <string name="admin">ADMIN</string>
+    <string name="employee">EMPLOYEE</string>
 </resources>

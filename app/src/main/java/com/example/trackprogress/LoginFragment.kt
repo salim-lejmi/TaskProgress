@@ -1,6 +1,10 @@
 package com.example.trackprogress
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +14,21 @@ import android.widget.EditText
 import android.widget.Toast
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.example.trackprogress.Database.AppDatabase
+import com.example.trackprogress.Database.User
 import com.example.trackprogress.Database.UserCredentials
+import com.example.trackprogress.Database.UserCredsDAO
+import com.example.trackprogress.Database.UserType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
     lateinit var edtLoginEmail: EditText
     lateinit var edtLoginPassword: EditText
     lateinit var btnLogin: Button
-
+    lateinit var sharedPreferences: SharedPreferences
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,14 +44,56 @@ class LoginFragment : Fragment() {
         edtLoginPassword = myFrag.findViewById(R.id.edtLoginPassword)
         btnLogin = myFrag.findViewById(R.id.btnLogin)
 
+        sharedPreferences = requireContext().getSharedPreferences(getString(R.string.SharedPref),
+            Context.MODE_PRIVATE
+        )
+        val editor = sharedPreferences.edit()
 
+        GlobalScope.launch {
+            if(!adminExists()){
+                createAdmin()
+            }
+        }
 
         btnLogin.setOnClickListener {
             if(validateInput()){
+                val uname = edtLoginEmail.text.toString()
 
+                val userCredsDao = AppDatabase.getInstance(requireContext()).userCredsDao()
+                 CoroutineScope(Dispatchers.IO).launch {
+                     val userCredentials = userCredsDao.getCredByUsername(uname)
+
+                     if(userCredentials != null){
+                         if(BCrypt.verifyer().verify(edtLoginPassword.text.toString().toCharArray(), userCredentials.password).verified){
+                             val userDao = AppDatabase.getInstance(requireContext()).userDao()
+                             val user = userDao.getUserByEmail(uname)
+                             editor.putBoolean(getString(R.string.Cred_Pref),true)
+                             editor.putString(getString(R.string.Cred_ID),uname)
+                             if(user?.userType == UserType.ADMIN){
+                                 editor.putString(getString(R.string.User_Type),getString(R.string.admin))
+                             }else{
+                                 editor.putString(getString(R.string.User_Type),getString(R.string.employee))
+                             }
+                             editor.commit()
+                             Log.d("UserType", "User type is: ${user?.userType}")
+
+                             val intent = Intent(context,MainActivity::class.java)
+                             startActivity(intent)
+                         }else{
+                             activity?.runOnUiThread{
+                                 Toast.makeText(requireContext(),"Invalid Password",Toast.LENGTH_SHORT).show()
+                             }
+                         }
+                     }else{
+                         activity?.runOnUiThread{
+                             Toast.makeText(requireContext(),"User not found",Toast.LENGTH_SHORT).show()
+                         }
+                     }
+                 }
             }
             else{
-                Toast.makeText(context,"Error",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,"Error",Toast.LENGTH_SHORT).show()
+
             }
         }
 
@@ -62,9 +115,13 @@ class LoginFragment : Fragment() {
         return true
     }
 
-    //Continue form here **********************
-    fun adminExists(): Boolean{
-        return true
+    suspend fun adminExists(): Boolean{
+        val userCredsDao = AppDatabase.getInstance(requireContext()).userCredsDao()
+        val adminCount = userCredsDao.adminExists()
+        if(adminCount > 0){
+            return true
+        }
+        return false
     }
     suspend fun createAdmin(){
         val adminUserName = "Admin"
@@ -72,5 +129,8 @@ class LoginFragment : Fragment() {
 
         val userCredsDao = AppDatabase.getInstance(requireContext()).userCredsDao()
         userCredsDao.insertUserCredentials(UserCredentials(adminUserName, adminPassword))
+
+        val userDao = AppDatabase.getInstance(requireContext()).userDao()
+        userDao.insertUser(User(1000,"admin","Admin",UserType.ADMIN))
     }
 }

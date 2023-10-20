@@ -23,8 +23,8 @@ class SplashScreen : AppCompatActivity() {
 
         getSupportActionBar()?.hide()
 
-        sharedPreferences = this.getSharedPreferences("Shared_Prefs", MODE_PRIVATE)
-        val isLogIn = sharedPreferences.getBoolean("Cred_Pref",false)
+        sharedPreferences = this.getSharedPreferences(getString(R.string.SharedPref), MODE_PRIVATE)
+        val isLogIn = sharedPreferences.getBoolean(getString(R.string.Cred_Pref),false)
 
         Handler(Looper.getMainLooper()).postDelayed(
             {

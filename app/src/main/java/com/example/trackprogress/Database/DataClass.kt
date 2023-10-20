@@ -23,7 +23,7 @@ data class UserCredentials(
 data class Task(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val dueDate: Date,
+    val dueDate: String,
     val status: Status,
     val userId: Long
 )
@@ -33,7 +33,7 @@ data class TaskCompletion(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val taskId: Long,
-    val completionDate: Date
+    val completionDate: String
 )
 
 enum class UserType{

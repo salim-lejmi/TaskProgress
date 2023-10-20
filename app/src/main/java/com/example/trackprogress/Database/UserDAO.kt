@@ -18,5 +18,8 @@ suspend fun updateUser(user: User)
 suspend fun deleteUser(user: User)
 
 @Query("SELECT * FROM user WHERE id = :userId")
-suspend fun getTaskById(userId: Long): Task?
+suspend fun getUserById(userId: Long): User?
+
+@Query("SELECT * FROM user WHERE email = :email")
+suspend fun getUserByEmail(email: String): User?
 }
