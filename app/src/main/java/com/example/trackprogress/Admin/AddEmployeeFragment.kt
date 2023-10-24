@@ -13,7 +13,14 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import at.favre.lib.crypto.bcrypt.BCrypt
+import com.example.trackprogress.Database.AppDatabase
+import com.example.trackprogress.Database.Employee
+import com.example.trackprogress.Database.User
+import com.example.trackprogress.Database.UserCredentials
+import com.example.trackprogress.Database.UserType
 import com.example.trackprogress.R
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -33,6 +40,15 @@ class AddEmployeeFragment : Fragment() {
     lateinit var edtSalary: EditText
     lateinit var edtLeaves: EditText
     lateinit var btnAddEmp: Button
+
+    var id = 0L
+    var name = ""
+    var email = ""
+    private var password = ""
+    var selectedDepartment = ""
+    var designation = ""
+    var salary = 0.0
+    var leaves = 0
 
    var departmentList = ArrayList<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,8 +81,6 @@ class AddEmployeeFragment : Fragment() {
         departmentList.add("R&D")
         departmentList.add("InfoTech")
 
-        var selectedDepartment = ""
-
         val arrAdapter = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, departmentList) }
         arrAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_item)
 
@@ -98,19 +112,51 @@ class AddEmployeeFragment : Fragment() {
         edtDOJ.setOnClickListener {
             showDatePicker(edtDOJ)
         }
+
         btnAddEmp.setOnClickListener {
-            val id = edtID.text.toString().toLong()
-            val name = edtName.text.toString()
-            val email = edtEmail.text.toString()
-            val password = BCrypt.withDefaults().hashToString(12,edtPassword1.text.toString().toCharArray())
-            val dob = stringToDate(edtDOB.text.toString())
-            val doj = stringToDate(edtDOJ.text.toString())
-            val designation = edtDesignation.text.toString()
-            val salary = edtSalary.text.toString().toDouble()
-            val leaves = edtLeaves.text.toString().toInt()
-            if(id != 0L && name != "" && email != "" && password != "" &&
-                edtDOB.text.toString() != "" && edtDOJ.text.toString() != "" &&
-                designation != "" && salary != 0.0 ){
+
+            if(edtName.text.toString() !="" &&
+                edtName.text.toString() != "" &&
+                edtEmail.text.toString() != "" &&
+                edtPassword1.text.toString() != "" &&
+                edtDOB.text.toString() != "" &&
+                edtDOJ.text.toString() != "" &&
+                edtDesignation.text.toString() != "" &&
+                edtSalary.text.toString() != "" &&
+                edtLeaves.text.toString() != "" &&
+                (selectedDepartment != "" ||
+                        selectedDepartment != "Select a Department")){
+
+                id = edtID.text.toString().toLong()
+                name = edtName.text.toString()
+                email = edtEmail.text.toString()
+                password = BCrypt.withDefaults().hashToString(12,edtPassword1.text.toString().toCharArray())
+                val dob = stringToDate(edtDOB.text.toString())
+                val doj = stringToDate(edtDOJ.text.toString())
+                designation = edtDesignation.text.toString()
+                salary = edtSalary.text.toString().toDouble()
+                leaves = edtLeaves.text.toString().toInt()
+
+                edtID.setText("")
+                edtName.setText("")
+                edtEmail.setText("")
+                edtPassword1.setText("")
+                edtDOB.setText("")
+                edtDOJ.setText("")
+                spinnerDepartment.setSelection(0)
+                edtDesignation.setText("")
+                edtSalary.setText("")
+                edtLeaves.setText("")
+
+                GlobalScope.launch {
+                    addUserCreds(email,password)
+                    addUser(id,name,email)
+                    if(dob != null && doj != null) {
+                        addEmp(id, selectedDepartment, doj!!, dob!!, designation, salary, leaves)
+                    }else{
+                        Toast.makeText(context,"Invalid Date Format",Toast.LENGTH_SHORT).show()
+                    }
+                }
 
             }else{
                 Toast.makeText(context,"Fill all fields",Toast.LENGTH_SHORT).show()
@@ -130,9 +176,8 @@ class AddEmployeeFragment : Fragment() {
         var datePickerDialog = DatePickerDialog(
             requireContext(),
             DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                val date = "$year - ${month + 1} - $dayOfMonth"
+                val date = "$year-${month + 1}-$dayOfMonth"
                 edtText.setText(date)
-
             },year,month,day)
         datePickerDialog.show()
     }
@@ -145,5 +190,20 @@ class AddEmployeeFragment : Fragment() {
             e.printStackTrace()
         }
         return null
+    }
+
+    suspend fun addUserCreds(uname: String, pswd: String){
+        val userCredsDao = AppDatabase.getInstance(requireContext()).userCredsDao()
+        userCredsDao.insertUserCredentials(UserCredentials(uname,pswd))
+    }
+
+    suspend fun addUser(id: Long, name: String, email: String){
+        val userDao = AppDatabase.getInstance(requireContext()).userDao()
+        userDao.insertUser(User(id,name,email,UserType.EMPLOYEE))
+    }
+
+    suspend fun addEmp(id: Long, department: String, doj: Date, dob:Date, designation: String, salary: Double, leaveBalance: Int){
+        val employeeDAO = AppDatabase.getInstance(requireContext()).employeeDao()
+        employeeDAO.insert(Employee(id,department,doj,dob,designation,salary,leaveBalance))
     }
 }

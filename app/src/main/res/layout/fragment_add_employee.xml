@@ -181,7 +181,7 @@
                 android:background="@drawable/rounded_edtext"
                 android:gravity="center"
                 android:hint="Salary"
-                android:inputType="text"
+                android:inputType="numberDecimal"
                 android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -22,7 +22,6 @@ data class UserCredentials(
 @Entity(tableName = "employee")
 data class Employee(
     @PrimaryKey(autoGenerate = true)
-    val id: Long?,
     val userId: Long, // Id of User table
     val department: String,
     val joiningDate: Date,
