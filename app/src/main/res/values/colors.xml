@@ -3,6 +3,6 @@
     <color name="text_blue">#5678DD</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primary_background">#FBFBEB</color>
-    <color name="secondary_background">#FCE6FF</color>
+    <color name="button_background">#FF5733</color>
+    <color name="secondary_background">#EFEFEF</color>
 </resources>

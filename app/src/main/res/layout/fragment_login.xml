@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_background"
+    android:background="@drawable/gradient_background_primary"
     tools:context=".LoginFragment">
 
 
@@ -21,35 +21,58 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_background_secondary">
 
-            <TextView
-                android:id="@+id/loginTitle"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/btnLogin"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="40dp"
-                android:textColor="@color/black"
-                android:background="@color/primary_background"
+                android:layout_marginTop="24dp"
+                android:background="@color/secondary_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/loginTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="@string/btnLogin"
+                    android:textColor="@color/black"
+                    android:textSize="40dp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <EditText
                 android:id="@+id/edtLoginEmail"
                 android:layout_width="350sp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/rounded_edtext"
                 android:ems="10"
-                android:inputType="textEmailAddress"
-                android:hint="E-Mail"
                 android:gravity="center"
+                android:hint="E-Mail"
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/loginTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
 
             <EditText
@@ -61,6 +84,8 @@
                 android:inputType="textPassword"
                 android:hint="Password"
                 android:gravity="center"
+                android:background="@drawable/rounded_edtext"
+                android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edtLoginEmail" />
@@ -73,7 +98,7 @@
                 android:text="@string/btnLogin"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:backgroundTint="@color/primary_background"
+                android:backgroundTint="@color/secondary_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edtLoginPassword" />

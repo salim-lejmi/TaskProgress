@@ -5,12 +5,15 @@ import android.net.wifi.hotspot2.pps.Credential.UserCredential
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
-@Database(entities = [User::class, Task::class, UserCredentials::class, TaskCompletion::class], version = 1)
+@Database(entities = [User::class, Task::class, UserCredentials::class, Employee::class,TaskCompletion::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun userDao(): UserDAO
     abstract fun taskDao(): TaskDAO
     abstract fun userCredsDao(): UserCredsDAO
+    abstract fun employeeDao(): EmployeeDAO
     abstract fun taskCompletionDao(): TaskCompletionDAO
 
     companion object {

@@ -19,11 +19,24 @@ data class UserCredentials(
     val password: String
 )
 
+@Entity(tableName = "employee")
+data class Employee(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long?,
+    val userId: Long, // Id of User table
+    val department: String,
+    val joiningDate: Date,
+    val dateOfBirth: Date,
+    val designation: String,
+    val salary: Double,
+    val leaveBalance: Int
+)
+
 @Entity(tableName = "Task")
 data class Task(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val dueDate: String,
+    val dueDate: Date,
     val status: Status,
     val userId: Long
 )
@@ -33,7 +46,7 @@ data class TaskCompletion(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val taskId: Long,
-    val completionDate: String
+    val completionDate: Date
 )
 
 enum class UserType{

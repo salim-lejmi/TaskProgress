@@ -5,5 +5,14 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="CustomButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/gradient_background_secondary</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="CenteredSpinnerItem" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="Theme.TrackProgress" parent="Base.Theme.TrackProgress" />
 </resources>
