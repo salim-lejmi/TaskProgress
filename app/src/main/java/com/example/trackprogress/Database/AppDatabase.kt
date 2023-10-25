@@ -1,7 +1,6 @@
 package com.example.trackprogress.Database
 
 import android.content.Context
-import android.net.wifi.hotspot2.pps.Credential.UserCredential
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -19,13 +18,15 @@ abstract class AppDatabase: RoomDatabase() {
     companion object {
         private var instance: AppDatabase? = null
 
-        fun getInstance(context: Context): AppDatabase {
+        fun getInstance(context: Context?): AppDatabase {
             if (instance == null) {
-                instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "app_database"
-                ).build()
+                if (context != null) {
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        AppDatabase::class.java,
+                        "app_database"
+                    ).build()
+                }
             }
             return instance as AppDatabase
         }

@@ -1,5 +1,6 @@
 package com.example.trackprogress.Database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -16,6 +17,9 @@ suspend fun updateUser(user: User)
 
 @Delete
 suspend fun deleteUser(user: User)
+
+@Query("SELECT * FROM user WHERE userType = \'EMPLOYEE\'")
+fun getUser(): LiveData<List<User>>
 
 @Query("SELECT * FROM user WHERE id = :userId")
 suspend fun getUserById(userId: Long): User?
