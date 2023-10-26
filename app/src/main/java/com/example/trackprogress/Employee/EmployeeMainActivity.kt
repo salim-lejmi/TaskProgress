@@ -5,9 +5,6 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.example.trackprogress.Admin.AddEmployeeFragment
-import com.example.trackprogress.Admin.AssignTaskFragment
-import com.example.trackprogress.Admin.EmployeeListFragment
 import com.example.trackprogress.AuthActivity
 import com.example.trackprogress.R
 import com.google.android.material.bottomnavigation.BottomNavigationView

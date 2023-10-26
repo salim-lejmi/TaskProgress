@@ -1,4 +1,4 @@
-package com.example.trackprogress.Admin
+package com.example.trackprogress.Admin.Functionalities
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

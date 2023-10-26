@@ -5,10 +5,6 @@
         android:icon="@drawable/add_employee"
         android:title=""/>
     <item
-        android:id="@+id/assignTask"
-        android:icon="@drawable/assign_task"
-        android:title=""/>
-    <item
         android:id="@+id/employeeList"
         android:icon="@drawable/employee_list"
         android:title=""

@@ -1,4 +1,4 @@
-package com.example.trackprogress.Admin
+package com.example.trackprogress.Admin.Adapters
 
 import android.content.Context
 import android.view.LayoutInflater

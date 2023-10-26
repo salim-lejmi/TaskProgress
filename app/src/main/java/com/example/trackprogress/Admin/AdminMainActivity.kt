@@ -26,7 +26,6 @@ class AdminMainActivity : AppCompatActivity() {
         bottomAdminNavMenu.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.addEmployee -> { loadFrag(AddEmployeeFragment()) }
-                R.id.assignTask -> {loadFrag(AssignTaskFragment())}
                 R.id.employeeList -> {loadFrag(EmployeeListFragment())}
                 R.id.logOut -> {
                     val editor = sharedPreferences.edit()
