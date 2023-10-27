@@ -33,6 +33,7 @@ class EditEmployeeFragment : Fragment() {
     lateinit var edtEditSalary: EditText
     lateinit var edtEditLeaves: EditText
     lateinit var btnUpdate: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -57,6 +58,7 @@ class EditEmployeeFragment : Fragment() {
         val name = arguments?.getString("name")!!
         val userDAO = AppDatabase.getInstance(requireContext()).userDao()
         val employeeDAO = AppDatabase.getInstance(requireContext()).employeeDao()
+
         GlobalScope.launch {
             val user = userDAO.getUserById(id)
             val emp = employeeDAO.getEmployeeByID(id)
@@ -80,6 +82,15 @@ class EditEmployeeFragment : Fragment() {
         }
         txtEditId.setText("$id")
         edtEditName.setText(name)
+
+
+
+        edtEditDOJ.setOnClickListener {
+            showDatePicker(edtEditDOB)
+        }
+        edtEditDOJ.setOnClickListener {
+            showDatePicker(edtEditDOJ)
+        }
 
         return view
     }
