@@ -34,10 +34,12 @@ data class Employee(
 @Entity(tableName = "Task")
 data class Task(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    val id: Long = 0,
+    val userId: Long,
+    val title: String,
+    val description: String,
     val dueDate: Date,
-    val status: Status,
-    val userId: Long
+    val status: Status
 )
 
 @Entity(tableName = "TaskCompletion")

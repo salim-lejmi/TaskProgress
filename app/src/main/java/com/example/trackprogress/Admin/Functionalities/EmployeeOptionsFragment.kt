@@ -40,6 +40,9 @@ class EmployeeOptionsFragment : Fragment() {
         txtEmployeeID1.text = id.toString()
         txtEmployeeName1.text = name
         Log.d("MyFragment", "ID: $id, Name: $name")
+        val bundle = Bundle()
+        id?.let { bundle.putLong("ID", it) }
+        bundle.putString("name",name)
 
 
         cstEdit.setOnClickListener {
@@ -52,11 +55,13 @@ class EmployeeOptionsFragment : Fragment() {
             Toast.makeText(context,"Approving leaves",Toast.LENGTH_SHORT).show()
         }
         cstTask.setOnClickListener {
+
+            val fragment = AssignTaskFragment()
+            fragment.arguments = bundle
             var myFrag = requireActivity().supportFragmentManager.beginTransaction()
-            myFrag.replace(R.id.adminFrame, AssignTaskFragment())
+            myFrag.replace(R.id.adminFrame, fragment)
             myFrag.commit()
         }
-
 
         return view
     }
