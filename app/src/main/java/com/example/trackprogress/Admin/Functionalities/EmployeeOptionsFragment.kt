@@ -50,7 +50,13 @@ class EmployeeOptionsFragment : Fragment() {
 
 
         cstEdit.setOnClickListener {
-            Toast.makeText(context,"Editing the emp",Toast.LENGTH_SHORT).show()
+            val fragment = EditEmployeeFragment()
+            fragment.arguments = bundle
+
+
+            var myFrag = requireActivity().supportFragmentManager.beginTransaction()
+            myFrag.replace(R.id.adminFrame, fragment)
+            myFrag.commit()
         }
         cstDelete.setOnClickListener {
             val userDAO = AppDatabase.getInstance(requireContext()).userDao()
@@ -68,8 +74,6 @@ class EmployeeOptionsFragment : Fragment() {
                     employeeDAO.deleteEmpByID(id)
                     taskDAO.deleteTaskById(id)
                     taskCompletionDAO.deleteTaskCompletionById(id)
-                }else{
-                    Toast.makeText(context,"EMAIL: $email",Toast.LENGTH_SHORT).show()
                 }
 
             }
