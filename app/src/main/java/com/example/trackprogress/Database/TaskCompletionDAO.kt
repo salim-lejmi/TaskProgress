@@ -19,4 +19,7 @@ suspend fun  deleteTaskCompletion(taskCompletion: TaskCompletion)
 
 @Query("SELECT * FROM taskcompletion WHERE id = :taskId")
 suspend fun getTaskCompletionByID(taskId: Long): TaskCompletion?
+
+@Query("DELETE FROM taskcompletion WHERE userId = :userId")
+suspend fun deleteTaskCompletionById(userId: Long)
 }

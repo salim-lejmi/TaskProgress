@@ -24,4 +24,7 @@ interface UserCredsDAO {
     @Query("SELECT * FROM userCredentials WHERE username = :uname")
     suspend fun getCredByUsername(uname: String): UserCredentials?
 
+    @Query("DELETE FROM userCredentials WHERE username= :uname")
+    suspend fun deleteUserCredByEmail(uname: String)
+
 }

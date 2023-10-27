@@ -9,7 +9,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.trackprogress.Admin.EmployeeListFragment
+import com.example.trackprogress.Database.AppDatabase
 import com.example.trackprogress.R
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class EmployeeOptionsFragment : Fragment() {
     lateinit var txtEmployeeName1: TextView
@@ -35,13 +39,13 @@ class EmployeeOptionsFragment : Fragment() {
         cstLeave = view.findViewById(R.id.cstLeaves)
         cstTask = view.findViewById(R.id.cstTask)
 
-        val id = arguments?.getLong("ID")
+        val id = arguments?.getLong("ID")!!
         val name = arguments?.getString("name")
         txtEmployeeID1.text = id.toString()
         txtEmployeeName1.text = name
         Log.d("MyFragment", "ID: $id, Name: $name")
         val bundle = Bundle()
-        id?.let { bundle.putLong("ID", it) }
+        bundle.putLong("ID", id)
         bundle.putString("name",name)
 
 
@@ -49,7 +53,32 @@ class EmployeeOptionsFragment : Fragment() {
             Toast.makeText(context,"Editing the emp",Toast.LENGTH_SHORT).show()
         }
         cstDelete.setOnClickListener {
+            val userDAO = AppDatabase.getInstance(requireContext()).userDao()
+            val userCredsDAO = AppDatabase.getInstance(requireContext()).userCredsDao()
+            val employeeDAO = AppDatabase.getInstance(requireContext()).employeeDao()
+            val taskDAO = AppDatabase.getInstance(requireContext()).taskDao()
+            val taskCompletionDAO = AppDatabase.getInstance(requireContext()).taskCompletionDao()
+
+            GlobalScope.launch {
+
+                val email = userDAO.getUserById(id)?.email!!
+                if(email != null){
+                    userCredsDAO.deleteUserCredByEmail(email)
+                    userDAO.deleteUserById(id)
+                    employeeDAO.deleteEmpByID(id)
+                    taskDAO.deleteTaskById(id)
+                    taskCompletionDAO.deleteTaskCompletionById(id)
+                }else{
+                    Toast.makeText(context,"EMAIL: $email",Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
             Toast.makeText(context,"Removing the emp",Toast.LENGTH_SHORT).show()
+
+            var myFrag = requireActivity().supportFragmentManager.beginTransaction()
+            myFrag.replace(R.id.adminFrame, EmployeeListFragment())
+            myFrag.commit()
         }
         cstLeave.setOnClickListener {
             Toast.makeText(context,"Approving leaves",Toast.LENGTH_SHORT).show()

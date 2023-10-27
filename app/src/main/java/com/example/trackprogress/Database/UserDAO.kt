@@ -26,4 +26,7 @@ suspend fun getUserById(userId: Long): User?
 
 @Query("SELECT * FROM user WHERE email = :email")
 suspend fun getUserByEmail(email: String): User?
+
+@Query("DELETE FROM user WHERE id = :userId")
+suspend fun deleteUserById(userId: Long)
 }

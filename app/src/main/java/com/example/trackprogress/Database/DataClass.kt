@@ -47,6 +47,7 @@ data class TaskCompletion(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val taskId: Long,
+    val userId: Long,
     val completionDate: Date
 )
 
