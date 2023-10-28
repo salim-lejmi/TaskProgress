@@ -58,4 +58,9 @@ dependencies {
     //Bcrypt Dependencies
     implementation("at.favre.lib:bcrypt:0.9.0")
 
+    //lifecycleScope
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+
+
 }
