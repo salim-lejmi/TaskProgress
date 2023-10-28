@@ -26,7 +26,7 @@ interface PendingLeavesDAO {
     suspend fun deleteLeaveByLeaveId(leaveId: Long)
 
     @Query("SELECT * FROM pendingLeaves WHERE id= :userId")
-    suspend fun getLeavesByUserId(userId: Long)
+    suspend fun getLeavesByUserId(userId: Long): PendingLeaves?
 
     @Query("SELECT * FROM pendingLeaves WHERE id= :userId")
     fun displayLeaves(userId: Long): LiveData<List<PendingLeaves>>
