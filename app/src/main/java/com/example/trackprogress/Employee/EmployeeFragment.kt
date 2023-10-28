@@ -1,60 +1,129 @@
 package com.example.trackprogress.Employee
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
+import com.example.trackprogress.Admin.Functionalities.ApproveLeaveFragment
+import com.example.trackprogress.Admin.Functionalities.AssignTaskFragment
+import com.example.trackprogress.Database.AppDatabase
+import com.example.trackprogress.Employee.Functionalities.ApplyLeaveFragment
+import com.example.trackprogress.Employee.Functionalities.EmpTaskFragment
+import com.example.trackprogress.Employee.Functionalities.ProfileFragment
+import com.example.trackprogress.Employee.Functionalities.QueryFragment
 import com.example.trackprogress.R
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [EmployeeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class EmployeeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var txtEmp_Name: TextView
+    lateinit var txtWish: TextView
+    lateinit var cstEmpTask: ConstraintLayout
+    lateinit var cstEmpLeave: ConstraintLayout
+    lateinit var cstEmpQuery: ConstraintLayout
+    lateinit var cstEmpProfile: ConstraintLayout
+
+    private var name = ""
+    private var id = 0L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_employee, container, false)
+        val view = inflater.inflate(R.layout.fragment_employee, container, false)
+        txtEmp_Name = view.findViewById(R.id.txtEmp_Name)
+        txtWish = view.findViewById(R.id.txtWish)
+        cstEmpTask = view.findViewById(R.id.cstEmpTask)
+        cstEmpLeave = view.findViewById(R.id.cstEmpLeave)
+        cstEmpQuery = view.findViewById(R.id.cstEmpQuery)
+        cstEmpProfile = view.findViewById(R.id.cstEmpProfile)
+
+        sharedPreferences = requireContext().getSharedPreferences(getString(R.string.SharedPref), MODE_PRIVATE)
+        val uname = sharedPreferences.getString(getString(R.string.Cred_ID),"")!!
+
+        txtWish.setText(greeting())
+
+        lifecycleScope.launch{
+            val userDAO = AppDatabase.getInstance(requireContext()).userDao()
+            val user = userDAO.getUserByEmail(uname)!!
+            name = user.name
+            id = user.id!!
+            txtEmp_Name.setText("Welcome, $name")
+
+            val bundle = Bundle()
+            bundle.putLong("ID",id)
+
+            cstEmpTask.setOnClickListener {
+                val fragment = EmpTaskFragment()
+                fragment.arguments = bundle
+
+                var myFrag = requireActivity().supportFragmentManager.beginTransaction()
+                myFrag.replace(R.id.employeeFrame,fragment)
+                myFrag.commit()
+            }
+
+            cstEmpLeave.setOnClickListener {
+                val fragment = ApplyLeaveFragment()
+                fragment.arguments = bundle
+
+                var myFrag = requireActivity().supportFragmentManager.beginTransaction()
+                myFrag.replace(R.id.employeeFrame,fragment)
+                myFrag.commit()
+            }
+
+            cstEmpQuery.setOnClickListener {
+                val fragment = QueryFragment()
+                fragment.arguments = bundle
+
+                var myFrag = requireActivity().supportFragmentManager.beginTransaction()
+                myFrag.replace(R.id.employeeFrame,fragment)
+                myFrag.commit()
+            }
+
+            cstEmpProfile.setOnClickListener {
+                val fragment = ProfileFragment()
+                fragment.arguments = bundle
+
+                var myFrag = requireActivity().supportFragmentManager.beginTransaction()
+                myFrag.replace(R.id.employeeFrame,fragment)
+                myFrag.commit()
+            }
+        }
+
+        return view
+    }
+    fun greeting(): String{
+        val currentTime = Calendar.getInstance().time
+
+        val simpleDateFormat = SimpleDateFormat("HH:mm")
+        val time = simpleDateFormat.format(currentTime)
+
+        val hour = time.split(":")[0].toInt()
+
+        var greetingMsg = ""
+        if(hour in 0 .. 11){
+            greetingMsg = "Good Morning!"
+        }else if (hour in 12 .. 17){
+            greetingMsg = "Good Afternoon!"
+        }else{
+            greetingMsg = "Good Evening!"
+        }
+        return greetingMsg
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EmployeeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EmployeeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
 }

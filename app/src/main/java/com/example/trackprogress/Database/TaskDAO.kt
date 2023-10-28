@@ -1,5 +1,6 @@
 package com.example.trackprogress.Database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -17,9 +18,14 @@ interface TaskDAO {
     @Delete
     suspend fun  deleteTask(task: Task)
 
-    @Query("SELECT * FROM task WHERE id = :taskId")
+    @Query("SELECT * FROM task WHERE userId = :taskId")
     suspend fun getTaskByID(taskId: Long): Task?
 
     @Query("DELETE FROM task WHERE id= :userId")
     suspend fun deleteTaskById(userId: Long)
+    @Query("SELECT * FROM task WHERE id= :taskId")
+    suspend fun getTaskByTaskId(taskId: Long): Task?
+
+    @Query("SELECT * FROM task WHERE userId = :userId")
+    fun getTask(userId: Long): LiveData<List<Task>>
 }
