@@ -25,4 +25,7 @@ interface EmployeeDAO {
 
     @Query("DELETE FROM employee WHERE userId= :empID")
     suspend fun deleteEmpByID(empID: Long)
+
+    @Query("UPDATE employee SET leaveBalance = leaveBalance - :count WHERE userId = :empID")
+    suspend fun updateLeaves(empID: Long, count: Int)
 }

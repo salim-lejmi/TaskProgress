@@ -51,6 +51,16 @@ data class TaskCompletion(
     val completionDate: Date
 )
 
+@Entity(tableName = "pendingLeaves")
+data class PendingLeaves(
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0,
+    var userId: Long,
+    var fromDate: Date,
+    var count: Int,
+    var appliedDate: Date
+)
+
 enum class UserType{
     ADMIN,
     EMPLOYEE

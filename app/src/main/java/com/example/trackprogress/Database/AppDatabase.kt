@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [User::class, Task::class, UserCredentials::class, Employee::class,TaskCompletion::class], version = 1)
+@Database(entities = [User::class, Task::class, UserCredentials::class, Employee::class, TaskCompletion::class, PendingLeaves::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun userDao(): UserDAO
@@ -14,6 +14,7 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun userCredsDao(): UserCredsDAO
     abstract fun employeeDao(): EmployeeDAO
     abstract fun taskCompletionDao(): TaskCompletionDAO
+    abstract fun pendingLeavesDao(): PendingLeavesDAO
 
     companion object {
         private var instance: AppDatabase? = null
