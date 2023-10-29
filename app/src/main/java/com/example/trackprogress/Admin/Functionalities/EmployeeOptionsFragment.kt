@@ -22,6 +22,7 @@ class EmployeeOptionsFragment : Fragment() {
     lateinit var cstDelete: ConstraintLayout
     lateinit var cstLeave: ConstraintLayout
     lateinit var cstTask: ConstraintLayout
+    lateinit var cstQuery: ConstraintLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +39,7 @@ class EmployeeOptionsFragment : Fragment() {
         cstDelete = view.findViewById(R.id.cstRemove)
         cstLeave = view.findViewById(R.id.cstLeaves)
         cstTask = view.findViewById(R.id.cstTask)
+        cstQuery = view.findViewById(R.id.cstQuery)
 
         val id = arguments?.getLong("ID")!!
         val name = arguments?.getString("name")
@@ -85,7 +87,11 @@ class EmployeeOptionsFragment : Fragment() {
             myFrag.commit()
         }
         cstLeave.setOnClickListener {
-            Toast.makeText(context,"Approving leaves",Toast.LENGTH_SHORT).show()
+            val fragment = ApproveLeaveFragment()
+            fragment.arguments = bundle
+            var myFrag = requireActivity().supportFragmentManager.beginTransaction()
+            myFrag.replace(R.id.adminFrame, fragment)
+            myFrag.commit()
         }
         cstTask.setOnClickListener {
 
@@ -95,7 +101,13 @@ class EmployeeOptionsFragment : Fragment() {
             myFrag.replace(R.id.adminFrame, fragment)
             myFrag.commit()
         }
-
+        cstQuery.setOnClickListener {
+            val fragment = ResolveQueryFragment()
+            fragment.arguments = bundle
+            val myFrag = requireActivity().supportFragmentManager.beginTransaction()
+            myFrag.replace(R.id.adminFrame,fragment)
+            myFrag.commit()
+        }
         return view
     }
 }
