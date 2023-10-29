@@ -52,25 +52,24 @@ class ChangePasswordFragment : Fragment() {
                         if(edtNewPassword.text.toString().length >= 8){
                             if(BCrypt.verifyer().verify(edtOldPassword.text.toString().toCharArray(), userCredentials.password).verified){
                                 val newPass1 = BCrypt.withDefaults().hashToString(12,edtNewPassword.text.toString().toCharArray())
-                                val newPass2 = BCrypt.withDefaults().hashToString(12,edtNewPassword2.text.toString().toCharArray())
-                                if(newPass1 == newPass2){
+
                                     val userCredentials = AppDatabase.getInstance(requireContext()).userCredsDao()
                                     userCredsDao.changePasswordByEmail(uname,newPass1)
-                                    Toast.makeText(requireContext(),"Password Changed",Toast.LENGTH_SHORT).show()
+                                    activity?.runOnUiThread {
+                                        Toast.makeText(requireContext(),"Password Changed",Toast.LENGTH_SHORT).show()
+                                    }
                                     val frag = requireActivity().supportFragmentManager.beginTransaction()
                                     frag.replace(R.id.authFrame,LoginFragment())
                                     frag.commit()
-                                }else{
-                                    Toast.makeText(requireContext(),"New Passwords don't match",Toast.LENGTH_SHORT).show()
-                                }
-
                             }else{
                                 activity?.runOnUiThread{
                                     Toast.makeText(requireContext(),"Invalid Old Password", Toast.LENGTH_SHORT).show()
                                 }
                             }
                         }else{
-                            Toast.makeText(requireContext(),"Password length shouldn't be less than 8",Toast.LENGTH_SHORT).show()
+                            activity?.runOnUiThread {
+                                Toast.makeText(requireContext(),"Password length shouldn't be less than 8",Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }else{
                         activity?.runOnUiThread{
