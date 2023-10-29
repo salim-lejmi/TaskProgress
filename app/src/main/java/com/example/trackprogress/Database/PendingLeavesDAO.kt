@@ -31,4 +31,7 @@ interface PendingLeavesDAO {
     @Query("SELECT * FROM pendingLeaves WHERE userId= :userId")
     fun displayLeaves(userId: Long): LiveData<List<PendingLeaves>>
 
+    @Query("SELECT SUM(count) FROM pendingLeaves WHERE userId = :userId")
+    suspend fun getSumOfLeavesByUserId(userId: Long): Int
+
 }

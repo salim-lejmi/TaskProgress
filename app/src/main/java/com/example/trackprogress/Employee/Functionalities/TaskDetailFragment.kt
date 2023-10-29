@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.trackprogress.Database.AppDatabase
 import com.example.trackprogress.Database.Status
 import com.example.trackprogress.Database.Task
 import com.example.trackprogress.Database.TaskCompletion
 import com.example.trackprogress.R
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -60,7 +62,7 @@ class TaskDetailFragment : Fragment() {
             }
         }
         btnUpdateStatus.setOnClickListener {
-            lifecycleScope.launch {
+            lifecycleScope.launch(Dispatchers.Main) {
                 val task = taskDAO.getTaskByTaskId(taskId)
                 val userId = task?.userId!!
                 val title = task?.title!!
@@ -72,9 +74,14 @@ class TaskDetailFragment : Fragment() {
                 val completionDate = stringToDate(getCurrentDate())!!
                 taskCompletionDAO.insertTaskCompletion(TaskCompletion(0, taskId, userId, completionDate))
 
+                Toast.makeText(requireContext(),"Task status Updated",Toast.LENGTH_SHORT).show()
+                /*
                 var myFrag = requireActivity().supportFragmentManager.beginTransaction()
                 myFrag.replace(R.id.employeeFrame,EmpTaskFragment())
+                myFrag.addToBackStack(null)
                 myFrag.commit()
+
+                 */
             }
         }
 

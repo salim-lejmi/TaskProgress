@@ -28,4 +28,10 @@ interface TaskDAO {
 
     @Query("SELECT * FROM task WHERE userId = :userId")
     fun getTask(userId: Long): LiveData<List<Task>>
+
+    @Query("SELECT COUNT(*) FROM task WHERE userId= :userId")
+    suspend fun getAssignedTaskCount(userId: Long): Int
+
+    @Query("SELECT COUNT(*) FROM task WHERE userId= :userId AND status = 'COMPLETED'")
+    suspend fun getCompletedTaskCount(userId: Long): Int
 }

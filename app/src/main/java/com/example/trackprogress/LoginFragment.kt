@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.example.trackprogress.Admin.AdminMainActivity
@@ -17,6 +18,7 @@ import com.example.trackprogress.Database.AppDatabase
 import com.example.trackprogress.Database.User
 import com.example.trackprogress.Database.UserCredentials
 import com.example.trackprogress.Database.UserType
+import com.example.trackprogress.Employee.ChangePasswordFragment
 import com.example.trackprogress.Employee.EmployeeMainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +29,7 @@ class LoginFragment : Fragment() {
 
     lateinit var edtLoginEmail: EditText
     lateinit var edtLoginPassword: EditText
+    lateinit var txtChangePassword: TextView
     lateinit var btnLogin: Button
     lateinit var sharedPreferences: SharedPreferences
 
@@ -42,12 +45,20 @@ class LoginFragment : Fragment() {
         var myFrag =  inflater.inflate(R.layout.fragment_login, container, false)
         edtLoginEmail = myFrag.findViewById(R.id.edtLoginEmail)!!
         edtLoginPassword = myFrag.findViewById(R.id.edtLoginPassword)
+        txtChangePassword = myFrag.findViewById(R.id.txtChangePassword)
         btnLogin = myFrag.findViewById(R.id.btnLogin)
 
         sharedPreferences = requireContext().getSharedPreferences(getString(R.string.SharedPref),
             Context.MODE_PRIVATE
         )
         val editor = sharedPreferences.edit()
+
+        txtChangePassword.setOnClickListener {
+            val frag = requireActivity().supportFragmentManager.beginTransaction()
+            frag.replace(R.id.authFrame,ChangePasswordFragment())
+            frag.commit()
+
+        }
 
         GlobalScope.launch {
             if(!adminExists()){

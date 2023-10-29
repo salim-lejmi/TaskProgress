@@ -27,4 +27,7 @@ interface UserCredsDAO {
     @Query("DELETE FROM userCredentials WHERE username= :uname")
     suspend fun deleteUserCredByEmail(uname: String)
 
+    @Query("UPDATE userCredentials SET password= :pass WHERE username= :uname")
+    suspend fun changePasswordByEmail(uname: String, pass: String)
+
 }

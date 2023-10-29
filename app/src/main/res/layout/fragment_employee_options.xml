@@ -202,7 +202,7 @@
                 android:id="@+id/imageView10"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:contentDescription="Task"
+                android:contentDescription="Query"
                 android:src="@drawable/query_employee"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -222,6 +222,35 @@
                 app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cstTaskDetail"
+            android:layout_height="200dp"
+            android:layout_width="175dp"
+            android:padding="12dp">
+
+            <ImageView
+                android:id="@+id/imageView13"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:contentDescription="Task Detail"
+                android:src="@drawable/task_detail_employee"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:text="Task Details"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.gridlayout.widget.GridLayout>

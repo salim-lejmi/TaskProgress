@@ -68,13 +68,19 @@ class ApplyLeaveFragment : Fragment() {
                 edtFromDate.text.toString() != "" &&
                 edtLeaveCount.text.toString() != "" &&
                 edtLeaveCount.text.toString().toInt() <= txtLeaveBalance.text.toString().toInt() ){
-                val fromDate = stringToDate(edtFromDate.text.toString())!!
-                val currentDate = stringToDate(getCurrentDate())!!
-                val count = edtLeaveCount.text.toString().toInt()!!
-                lifecycleScope.launch{
-                    pendingLeavesDAO.insert(PendingLeaves(0,id,fromDate,count,currentDate))
-                    getPendingLeaves(id)
+                lifecycleScope.launch {
+                    val remainigLeaves = employeeDAO.getLeaveBalance(id)!! - pendingLeavesDAO.getSumOfLeavesByUserId(id)!!
+                    if (remainigLeaves < 0) {
+                        Toast.makeText(requireContext(),"Leave balance exhausted after approval",Toast.LENGTH_SHORT).show()
+                    } else {
+                        val fromDate = stringToDate(edtFromDate.text.toString())!!
+                        val currentDate = stringToDate(getCurrentDate())!!
+                        val count = edtLeaveCount.text.toString().toInt()!!
+                            pendingLeavesDAO.insert(PendingLeaves(0, id, fromDate, count, currentDate))
+                            getPendingLeaves(id)
+                    }
                 }
+
             }else{
                 Toast.makeText(context,"Wrong task",Toast.LENGTH_SHORT).show()
             }
