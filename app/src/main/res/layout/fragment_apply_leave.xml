@@ -59,6 +59,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="TextView"
+        android:gravity="center"
         android:textStyle="bold"
         android:textSize="16dp"
         android:padding="8dp"
@@ -88,8 +89,8 @@
         android:ems="10"
         android:hint="From Date"
         android:gravity="center"
-        android:clickable="false"
-        android:focusable="true"
+        android:clickable="true"
+        android:focusable="false"
         android:background="@drawable/rounded_edtext"
         android:padding="8dp"
         app:layout_constraintStart_toEndOf="@+id/textView20"
@@ -157,7 +158,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPendingTitle"
-        tools:layout_editor_absoluteX="1dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPendingTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

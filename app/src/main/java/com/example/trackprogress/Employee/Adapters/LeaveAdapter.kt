@@ -26,8 +26,8 @@ class LeaveAdapter(var ctx: Context, var res: Int,var list: List<PendingLeaves>)
 
         val data: PendingLeaves = list[position]
         val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-        txtFromDate1.text =  dateFormat.format(data.fromDate.toString())
-        txtAppliedDate1.text = dateFormat.format(data.appliedDate.toString())
+        txtFromDate1.text =  dateFormat.format(data.fromDate)
+        txtAppliedDate1.text = dateFormat.format(data.appliedDate)
         txtCount1.text = data.count.toString()
         val leaveId = data.id
         val pendingLeavesDAO = AppDatabase.getInstance(ctx).pendingLeavesDao()

@@ -61,6 +61,17 @@ data class PendingLeaves(
     var appliedDate: Date
 )
 
+@Entity(tableName = "queryTable")
+data class RaiseQuery(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+    val userId: Long,
+    val userQuery: String,
+    val adminReply: String,
+    val status: Status
+
+)
+
 enum class UserType{
     ADMIN,
     EMPLOYEE

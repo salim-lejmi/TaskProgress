@@ -2,6 +2,7 @@ package com.example.trackprogress.Employee.Functionalities
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,8 @@ class ApplyLeaveFragment : Fragment() {
     lateinit var btnApply: Button
     lateinit var txtPendingTitle: TextView
     lateinit var lstPendingLeaves: ListView
+
+    lateinit var adapter: LeaveAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -47,10 +50,12 @@ class ApplyLeaveFragment : Fragment() {
         txtPendingTitle = view.findViewById(R.id.txtPendingTitle)
         lstPendingLeaves = view.findViewById(R.id.lstPendingLeave)
 
+        adapter = LeaveAdapter(requireContext(),R.layout.custom_leave_view, ArrayList())
+        lstPendingLeaves.adapter = adapter
         val id = arguments?.getLong("ID")!!
 
-        edtLeaveCount.setOnClickListener {
-            showDatePicker(edtLeaveCount)
+        edtFromDate.setOnClickListener {
+            showDatePicker(edtFromDate)
         }
         val pendingLeavesDAO = AppDatabase.getInstance(requireContext()).pendingLeavesDao()
         val employeeDAO = AppDatabase.getInstance(requireContext()).employeeDao()
@@ -65,22 +70,27 @@ class ApplyLeaveFragment : Fragment() {
                 edtLeaveCount.text.toString().toInt() <= txtLeaveBalance.text.toString().toInt() ){
                 val fromDate = stringToDate(edtFromDate.text.toString())!!
                 val currentDate = stringToDate(getCurrentDate())!!
-                val count = edtLeaveCount.toString().toInt()
+                val count = edtLeaveCount.text.toString().toInt()!!
                 lifecycleScope.launch{
                     pendingLeavesDAO.insert(PendingLeaves(0,id,fromDate,count,currentDate))
+                    getPendingLeaves(id)
                 }
-
             }else{
                 Toast.makeText(context,"Wrong task",Toast.LENGTH_SHORT).show()
             }
         }
 
-        pendingLeavesDAO.displayLeaves(id).observe(viewLifecycleOwner){
-            val adapter = LeaveAdapter(requireContext(),R.layout.custom_leave_view,it)
-            lstPendingLeaves.adapter = adapter
-        }
-
+        getPendingLeaves(id)
         return view
+    }
+
+    fun getPendingLeaves(userId: Long){
+        val pendingLeavesDAO = AppDatabase.getInstance(requireContext()).pendingLeavesDao()
+        pendingLeavesDAO.displayLeaves(userId).observe(viewLifecycleOwner){data ->
+            adapter.clear()
+            adapter.addAll(data)
+            adapter.notifyDataSetChanged()
+        }
     }
 
     fun showDatePicker(edtText: EditText){
