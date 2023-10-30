@@ -53,14 +53,19 @@ class ChangePasswordFragment : Fragment() {
                             if(BCrypt.verifyer().verify(edtOldPassword.text.toString().toCharArray(), userCredentials.password).verified){
                                 val newPass1 = BCrypt.withDefaults().hashToString(12,edtNewPassword.text.toString().toCharArray())
 
-                                    val userCredentials = AppDatabase.getInstance(requireContext()).userCredsDao()
-                                    userCredsDao.changePasswordByEmail(uname,newPass1)
-                                    activity?.runOnUiThread {
-                                        Toast.makeText(requireContext(),"Password Changed",Toast.LENGTH_SHORT).show()
+                                    if(edtNewPassword.text.toString().equals(edtNewPassword2.text.toString())){
+                                        userCredsDao.changePasswordByEmail(uname,newPass1)
+                                        activity?.runOnUiThread {
+                                            Toast.makeText(requireContext(),"Password Changed",Toast.LENGTH_SHORT).show()
+                                        }
+                                        val frag = requireActivity().supportFragmentManager.beginTransaction()
+                                        frag.replace(R.id.authFrame,LoginFragment())
+                                        frag.commit()
+                                    }else{
+                                        activity?.runOnUiThread{
+                                            Toast.makeText(requireContext(),"New Passwords don't match",Toast.LENGTH_SHORT).show()
+                                        }
                                     }
-                                    val frag = requireActivity().supportFragmentManager.beginTransaction()
-                                    frag.replace(R.id.authFrame,LoginFragment())
-                                    frag.commit()
                             }else{
                                 activity?.runOnUiThread{
                                     Toast.makeText(requireContext(),"Invalid Old Password", Toast.LENGTH_SHORT).show()

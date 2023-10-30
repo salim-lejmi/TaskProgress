@@ -27,7 +27,7 @@ class AdminTaskDetailFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_admin_task_detail, container, false)
         txtTasksAssigned = view.findViewById(R.id.txtTasksAssigned)
-        txtTasksPending = view.findViewById(R.id.txtTasksPending)
+        txtTasksPending = view.findViewById(R.id.txtTasksCompleted)
         lstTaskDetails = view.findViewById(R.id.lstTaskDetails)
 
         val id = arguments?.getLong("ID")!!

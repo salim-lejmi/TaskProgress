@@ -95,7 +95,6 @@ class AddEmployeeFragment : Fragment() {
             ) {
                 if(position == 0){
                     spinnerDepartment.setSelection(0, false)
-                    Toast.makeText(context,"Select a valid value",Toast.LENGTH_SHORT).show()
                 }else{
                     selectedDepartment = departmentList[position]
                 }

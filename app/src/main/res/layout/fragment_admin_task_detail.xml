@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Tasks Pending"
+        android:text="Tasks Completed"
         android:textSize="20dp"
         android:padding="8dp"
         android:textStyle="bold"
@@ -80,7 +80,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
     <TextView
-        android:id="@+id/txtTasksPending"
+        android:id="@+id/txtTasksCompleted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
