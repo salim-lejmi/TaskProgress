@@ -114,22 +114,12 @@ class AddEmployeeFragment : Fragment() {
 
         btnAddEmp.setOnClickListener {
 
-            if(edtName.text.toString() !="" &&
-                edtName.text.toString() != "" &&
-                edtEmail.text.toString() != "" &&
-                edtPassword1.text.toString() != "" &&
-                edtDOB.text.toString() != "" &&
-                edtDOJ.text.toString() != "" &&
-                edtDesignation.text.toString() != "" &&
-                edtSalary.text.toString() != "" &&
-                edtLeaves.text.toString() != "" &&
-                (selectedDepartment != "" ||
-                        selectedDepartment != "Select a Department")){
+            if(edtName.text.toString() !="" && validateInput()){
 
                 id = edtID.text.toString().toLong()
                 name = edtName.text.toString()
                 email = edtEmail.text.toString()
-                password = BCrypt.withDefaults().hashToString(12,edtPassword1.text.toString().toCharArray())
+                password = BCrypt.withDefaults().hashToString(12,edtPassword1.text.toString().trim().toCharArray())
                 val dob = stringToDate(edtDOB.text.toString())
                 val doj = stringToDate(edtDOJ.text.toString())
                 designation = edtDesignation.text.toString()
@@ -204,5 +194,53 @@ class AddEmployeeFragment : Fragment() {
     suspend fun addEmp(id: Long, department: String, doj: Date, dob:Date, designation: String, salary: Double, leaveBalance: Int){
         val employeeDAO = AppDatabase.getInstance(requireContext()).employeeDao()
         employeeDAO.insert(Employee(id,department,doj,dob,designation,salary,leaveBalance))
+    }
+
+    fun validateInput(): Boolean{
+
+        if(edtEmail.text.toString().trim() == "" && edtPassword1.text.toString().trim() == ""){
+            edtEmail.error = "Please enter Email"
+            edtPassword1.error = "Please enter a password"
+            return false
+        }
+
+        if(edtPassword1.text.toString().trim().length < 8){
+            edtPassword1.error = "Password length must be greater than 8"
+            return false
+        }
+
+        if(edtDOB.text.toString() == ""){
+            edtDOB.error = "Select a date"
+            return false
+        }
+
+        if(edtDOJ.text.toString() == ""){
+            edtDOJ.error = "Select a date"
+            return false
+        }
+
+        if(edtDesignation.text.toString().trim() == ""){
+            edtDOB.error = "Enter designation"
+            return false
+        }
+
+        if(edtSalary.text.toString().trim() == ""){
+            edtSalary.error = "Enter salary"
+            return false
+        }else if(edtSalary.text.toString().trim().toInt() > 10000000 || edtSalary.text.toString().trim().toInt() < 10000){
+            edtSalary.error = "Enter a value between 10K to 1 Cr"
+            return false
+        }
+
+        if(edtLeaves.text.toString().toInt() > 30 || edtLeaves.text.toString().toInt() < 5){
+            edtLeaves.error = "Enter a value between 5 to 30"
+            return false
+        }
+
+        if(selectedDepartment == "" || selectedDepartment == "Select a Department" ){
+            Toast.makeText(requireContext(),"Select a valid department",Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
     }
 }
