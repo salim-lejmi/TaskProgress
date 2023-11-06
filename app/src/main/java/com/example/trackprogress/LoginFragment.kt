@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import at.favre.lib.crypto.bcrypt.BCrypt
@@ -31,6 +32,7 @@ class LoginFragment : Fragment() {
     lateinit var edtLoginPassword: EditText
     lateinit var txtChangePassword: TextView
     lateinit var btnLogin: Button
+    lateinit var progressBar: ProgressBar
     lateinit var sharedPreferences: SharedPreferences
 
 
@@ -47,6 +49,7 @@ class LoginFragment : Fragment() {
         edtLoginPassword = myFrag.findViewById(R.id.edtLoginPassword)
         txtChangePassword = myFrag.findViewById(R.id.txtChangePassword)
         btnLogin = myFrag.findViewById(R.id.btnLogin)
+        progressBar = myFrag.findViewById(R.id.progressBar)
 
         sharedPreferences = requireContext().getSharedPreferences(getString(R.string.SharedPref),
             Context.MODE_PRIVATE
@@ -68,6 +71,7 @@ class LoginFragment : Fragment() {
 
         btnLogin.setOnClickListener {
             if(validateInput()){
+                progressBar.visibility = View.VISIBLE
                 val uname = edtLoginEmail.text.toString()
 
                 val userCredsDao = AppDatabase.getInstance(requireContext()).userCredsDao()
@@ -101,6 +105,10 @@ class LoginFragment : Fragment() {
                          activity?.runOnUiThread{
                              Toast.makeText(requireContext(),"User not found",Toast.LENGTH_SHORT).show()
                          }
+                     }
+
+                     activity?.runOnUiThread {
+                         progressBar.visibility = View.GONE
                      }
                  }
             }
