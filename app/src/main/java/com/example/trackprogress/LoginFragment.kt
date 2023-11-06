@@ -19,7 +19,6 @@ import com.example.trackprogress.Database.AppDatabase
 import com.example.trackprogress.Database.User
 import com.example.trackprogress.Database.UserCredentials
 import com.example.trackprogress.Database.UserType
-import com.example.trackprogress.Employee.ChangePasswordFragment
 import com.example.trackprogress.Employee.EmployeeMainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -58,7 +57,7 @@ class LoginFragment : Fragment() {
 
         txtChangePassword.setOnClickListener {
             val frag = requireActivity().supportFragmentManager.beginTransaction()
-            frag.replace(R.id.authFrame,ChangePasswordFragment())
+            frag.replace(R.id.authFrame, ChangePasswordFragment())
             frag.commit()
 
         }

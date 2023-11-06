@@ -1,6 +1,5 @@
-package com.example.trackprogress.Employee
+package com.example.trackprogress
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,11 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import at.favre.lib.crypto.bcrypt.BCrypt
-import com.example.trackprogress.Admin.AdminMainActivity
 import com.example.trackprogress.Database.AppDatabase
-import com.example.trackprogress.Database.UserType
-import com.example.trackprogress.LoginFragment
-import com.example.trackprogress.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,31 +44,21 @@ class ChangePasswordFragment : Fragment() {
                     val userCredentials = userCredsDao.getCredByUsername(uname)
 
                     if(userCredentials != null){
-                        if(edtNewPassword.text.toString().length >= 8){
-                            if(BCrypt.verifyer().verify(edtOldPassword.text.toString().toCharArray(), userCredentials.password).verified){
-                                val newPass1 = BCrypt.withDefaults().hashToString(12,edtNewPassword.text.toString().toCharArray())
+                        if(validateInput()){
+                            if(BCrypt.verifyer().verify(edtOldPassword.text.toString().trim().toCharArray(), userCredentials.password).verified){
+                                val newPass1 = BCrypt.withDefaults().hashToString(12,edtNewPassword.text.toString().trim().toCharArray())
 
-                                    if(edtNewPassword.text.toString().equals(edtNewPassword2.text.toString())){
-                                        userCredsDao.changePasswordByEmail(uname,newPass1)
-                                        activity?.runOnUiThread {
-                                            Toast.makeText(requireContext(),"Password Changed",Toast.LENGTH_SHORT).show()
-                                        }
-                                        val frag = requireActivity().supportFragmentManager.beginTransaction()
-                                        frag.replace(R.id.authFrame,LoginFragment())
-                                        frag.commit()
-                                    }else{
-                                        activity?.runOnUiThread{
-                                            Toast.makeText(requireContext(),"New Passwords don't match",Toast.LENGTH_SHORT).show()
-                                        }
-                                    }
+                                userCredsDao.changePasswordByEmail(uname,newPass1)
+                                activity?.runOnUiThread {
+                                    Toast.makeText(requireContext(),"Password Changed",Toast.LENGTH_SHORT).show()
+                                }
+                                val frag = requireActivity().supportFragmentManager.beginTransaction()
+                                frag.replace(R.id.authFrame,LoginFragment())
+                                frag.commit()
                             }else{
                                 activity?.runOnUiThread{
                                     Toast.makeText(requireContext(),"Invalid Old Password", Toast.LENGTH_SHORT).show()
                                 }
-                            }
-                        }else{
-                            activity?.runOnUiThread {
-                                Toast.makeText(requireContext(),"Password length shouldn't be less than 8",Toast.LENGTH_SHORT).show()
                             }
                         }
                     }else{
@@ -87,5 +72,40 @@ class ChangePasswordFragment : Fragment() {
         }
 
         return view
+    }
+
+    fun validateInput(): Boolean{
+
+        if(edtEmail1.text.toString().trim() == ""){
+            edtEmail1.error = "Enter Email"
+            return false
+        }
+
+        if(edtOldPassword.text.toString().trim() == ""){
+            edtOldPassword.error = "Enter old password"
+            return false
+        }
+
+        if(edtNewPassword.text.toString().trim() == ""){
+            edtNewPassword.error = "Enter new password"
+            return false
+        }
+
+        if(edtNewPassword.text.toString().trim().length < 8){
+            edtNewPassword.error = "Password length must be greater than 8"
+            return false
+        }
+
+        if(edtNewPassword2.text.toString().trim() == ""){
+            edtNewPassword2.error = "Re-Enter new password"
+            return false
+        }
+
+        if(edtNewPassword.text.toString().trim() != edtNewPassword2.text.toString().trim()){
+            edtNewPassword2.error = "Passwords don't match"
+            edtNewPassword.error = "Passwords don't match"
+            return false
+        }
+        return true
     }
 }
