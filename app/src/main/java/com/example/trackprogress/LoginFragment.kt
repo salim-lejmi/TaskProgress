@@ -50,6 +50,7 @@ class LoginFragment : Fragment() {
         btnLogin = myFrag.findViewById(R.id.btnLogin)
         progressBar = myFrag.findViewById(R.id.progressBar)
 
+        progressBar.visibility = View.GONE
         sharedPreferences = requireContext().getSharedPreferences(getString(R.string.SharedPref),
             Context.MODE_PRIVATE
         )

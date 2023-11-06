@@ -1,6 +1,7 @@
 package com.example.trackprogress
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -44,20 +45,25 @@ class ChangePasswordFragment : Fragment() {
                     val userCredentials = userCredsDao.getCredByUsername(uname)
 
                     if(userCredentials != null){
-                        if(validateInput()){
-                            if(BCrypt.verifyer().verify(edtOldPassword.text.toString().trim().toCharArray(), userCredentials.password).verified){
-                                val newPass1 = BCrypt.withDefaults().hashToString(12,edtNewPassword.text.toString().trim().toCharArray())
+                        activity?.runOnUiThread{
+                            if(validateInput()){
+                                if(BCrypt.verifyer().verify(edtOldPassword.text.toString().trim().toCharArray(), userCredentials.password).verified){
+                                    val newPass1 = BCrypt.withDefaults().hashToString(12,edtNewPassword.text.toString().trim().toCharArray())
 
-                                userCredsDao.changePasswordByEmail(uname,newPass1)
-                                activity?.runOnUiThread {
-                                    Toast.makeText(requireContext(),"Password Changed",Toast.LENGTH_SHORT).show()
-                                }
-                                val frag = requireActivity().supportFragmentManager.beginTransaction()
-                                frag.replace(R.id.authFrame,LoginFragment())
-                                frag.commit()
-                            }else{
-                                activity?.runOnUiThread{
-                                    Toast.makeText(requireContext(),"Invalid Old Password", Toast.LENGTH_SHORT).show()
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        userCredsDao.changePasswordByEmail(uname, newPass1)
+                                    }
+
+                                    activity?.runOnUiThread {
+                                        Toast.makeText(requireContext(),"Password Changed",Toast.LENGTH_SHORT).show()
+                                    }
+                                    val frag = requireActivity().supportFragmentManager.beginTransaction()
+                                    frag.replace(R.id.authFrame,LoginFragment())
+                                    frag.commit()
+                                }else{
+                                    activity?.runOnUiThread{
+                                        Toast.makeText(requireContext(),"Invalid Old Password", Toast.LENGTH_SHORT).show()
+                                    }
                                 }
                             }
                         }
