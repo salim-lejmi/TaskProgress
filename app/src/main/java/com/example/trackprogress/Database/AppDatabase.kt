@@ -6,11 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [User::class, Task::class, UserCredentials::class, Employee::class, TaskCompletion::class, PendingLeaves::class, RaiseQuery::class], version = 1)
+@Database(entities = [User::class, Task::class, UserCredentials::class, Employee::class,
+    TaskCompletion::class, PendingLeaves::class, RaiseQuery::class, Notification::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun userDao(): UserDAO
     abstract fun taskDao(): TaskDAO
+    abstract fun notificationDao(): NotificationDAO
     abstract fun userCredsDao(): UserCredsDAO
     abstract fun employeeDao(): EmployeeDAO
     abstract fun taskCompletionDao(): TaskCompletionDAO
@@ -27,7 +29,9 @@ abstract class AppDatabase: RoomDatabase() {
                         context.applicationContext,
                         AppDatabase::class.java,
                         "app_database"
-                    ).build()
+                    ).fallbackToDestructiveMigration() // Add this for version change
+
+                    .build()
                 }
             }
             return instance as AppDatabase

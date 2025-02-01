@@ -11,6 +11,8 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.example.trackprogress.Database.AppDatabase
+import com.example.trackprogress.Database.Notification
+import com.example.trackprogress.Database.NotificationType
 import com.example.trackprogress.Database.Status
 import com.example.trackprogress.Database.Task
 import com.example.trackprogress.R
@@ -96,8 +98,22 @@ class AssignTaskFragment : Fragment() {
         return null
     }
 
-    suspend fun assignTask(userID: Long, title: String, dueDate: Date, description: String){
+    suspend fun assignTask(userID: Long, title: String, dueDate: Date, description: String) {
         val taskDAO = AppDatabase.getInstance(requireContext()).taskDao()
-        taskDAO.insertTask(Task(0,userID,title,description,dueDate,Status.PENDING))
+        val notificationDao = AppDatabase.getInstance(requireContext()).notificationDao()
+
+        // Insert task
+        taskDAO.insertTask(Task(0, userID, title, description, dueDate, Status.PENDING))
+
+        // Create notification
+        val notification = Notification(
+            userId = userID,
+            title = "New Task Assigned",
+            message = "You have been assigned a new task: $title",
+            timestamp = Date(),
+            type = NotificationType.TASK_ASSIGNED
+        )
+        notificationDao.insertNotification(notification)
     }
+
 }

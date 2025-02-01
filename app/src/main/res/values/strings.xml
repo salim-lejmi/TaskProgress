@@ -11,4 +11,6 @@
     <string name="User_Type">UserType</string>
     <string name="admin">ADMIN</string>
     <string name="employee">EMPLOYEE</string>
+
+    <string name="User_ID">user_id</string>
 </resources>

@@ -34,4 +34,8 @@ interface TaskDAO {
 
     @Query("SELECT COUNT(*) FROM task WHERE userId= :userId AND status = 'COMPLETED'")
     suspend fun getCompletedTaskCount(userId: Long): Int
+
+    @Query("SELECT COUNT(*) FROM Task WHERE status = :status")
+    suspend fun getTaskCountByStatus(status: Status): Int
+
 }

@@ -34,6 +34,12 @@ class AdminMainActivity : AppCompatActivity() {
 
         bottomAdminNavMenu.setOnItemSelectedListener {
             when(it.itemId){
+                R.id.dashboard -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.adminFrame, DashboardFragment())
+                        .commit()
+                    true
+                }
                 R.id.addEmployee -> { loadFrag(AddEmployeeFragment()) }
                 R.id.employeeList -> {loadFrag(EmployeeListFragment())}
                 R.id.logOut -> {

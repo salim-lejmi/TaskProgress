@@ -28,4 +28,8 @@ interface RaiseQueryDAO {
     @Query("SELECT * FROM queryTable WHERE id= :taskId")
     suspend fun getQueryByTaskId(taskId: Long): RaiseQuery
 
+    @Query("SELECT COUNT(*) FROM queryTable WHERE status = :status")
+    suspend fun getPendingQueriesCount(status: Status = Status.PENDING): Int
+
+
 }

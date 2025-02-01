@@ -13,4 +13,10 @@
         android:id="@+id/logOut"
         android:icon="@drawable/baseline_logout_24"
         android:title=""/>
+    <item
+        android:id="@+id/dashboard"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:title="Dashboard" />
+
+
 </menu>

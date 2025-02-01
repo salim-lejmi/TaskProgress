@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-</selector>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Bell Icon -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M14,20A2,2 0 0,1 12,22A2,2 0 0,1 10,20H14M12,2A1,1 0 0,1 13,3V4.08C15.84,4.56 18,7.03 18,10V16L21,19H3L6,16V10C6,7.03 8.16,4.56 11,4.08V3A1,1 0 0,1 12,2Z"/>
+    <!-- Unread Badge -->
+    <path
+        android:fillColor="#FF0000"
+        android:pathData="M16,6C16,7.1 15.1,8 14,8C12.9,8 12,7.1 12,6C12,4.9 12.9,4 14,4C15.1,4 16,4.9 16,6Z"/>
+</vector>

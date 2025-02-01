@@ -29,6 +29,22 @@ interface EmployeeDAO {
     @Query("UPDATE employee SET leaveBalance = leaveBalance - :count WHERE userId = :empID")
     suspend fun updateLeaves(empID: Long, count: Int)
 
+    // Fixed department counts query with data class
+    @Query("SELECT department, COUNT(*) as count FROM employee GROUP BY department")
+    suspend fun getDepartmentCounts(): List<DepartmentCount>
+
     @Query("SELECT leaveBalance FROM employee WHERE userId= :empId")
-    suspend fun getLeaveBalance(empId: Long):Int?
+    suspend fun getLeaveBalance(empId: Long): Int?
+
+    @Query("SELECT COUNT(*) FROM employee")
+    suspend fun getTotalEmployeeCount(): Int
+
+    @Query("SELECT DISTINCT department FROM employee")
+    suspend fun getAllDepartments(): List<String>
 }
+
+// Add this data class in the same file or create a new file
+data class DepartmentCount(
+    val department: String,
+    val count: Int
+)

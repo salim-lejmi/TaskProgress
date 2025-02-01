@@ -146,7 +146,7 @@ class LoginFragment : Fragment() {
     }
     suspend fun createAdmin(){
         val adminUserName = "Admin"
-        val adminPassword = BCrypt.withDefaults().hashToString(12,"DefaultAdmin".toCharArray())
+        val adminPassword = BCrypt.withDefaults().hashToString(12,"admin123".toCharArray())
 
         val userCredsDao = AppDatabase.getInstance(requireContext()).userCredsDao()
         userCredsDao.insertUserCredentials(UserCredentials(adminUserName, adminPassword))

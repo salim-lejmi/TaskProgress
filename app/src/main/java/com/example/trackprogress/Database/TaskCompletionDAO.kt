@@ -14,6 +14,8 @@ suspend fun insertTaskCompletion(taskComp: TaskCompletion)
 
 @Update
 suspend fun updateTaskCompletion(taskComp: TaskCompletion)
+    @Query("SELECT COUNT(*) FROM TaskCompletion GROUP BY strftime('%m', completionDate) ORDER BY completionDate LIMIT 6")
+    suspend fun getCompletionsByMonth(): List<Int>
 
 @Delete
 suspend fun  deleteTaskCompletion(taskCompletion: TaskCompletion)

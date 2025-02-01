@@ -8,4 +8,9 @@
         android:id="@+id/employeeLogOut"
         android:icon="@drawable/baseline_logout_24"
         android:title=""/>
+    <item
+        android:id="@+id/employeeNotifications"
+        android:icon="@drawable/ic_notifications"
+        android:title=""/>
+
 </menu>

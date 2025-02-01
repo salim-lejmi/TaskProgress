@@ -24,14 +24,22 @@ interface PendingLeavesDAO {
 
     @Query("DELETE FROM pendingLeaves WHERE id= :leaveId")
     suspend fun deleteLeaveByLeaveId(leaveId: Long)
+    @Query("SELECT * FROM pendingLeaves")
+    fun getAllPendingLeaves(): LiveData<List<PendingLeaves>>
 
     @Query("SELECT * FROM pendingLeaves WHERE id= :userId")
     suspend fun getLeavesByUserId(userId: Long): PendingLeaves?
 
     @Query("SELECT * FROM pendingLeaves WHERE userId= :userId")
     fun displayLeaves(userId: Long): LiveData<List<PendingLeaves>>
+    @Query("SELECT COUNT(*) FROM pendingLeaves GROUP BY strftime('%m', appliedDate) ORDER BY appliedDate LIMIT 6")
+    suspend fun getLeaveRequestsByMonth(): List<Int>
 
     @Query("SELECT SUM(count) FROM pendingLeaves WHERE userId = :userId")
     suspend fun getSumOfLeavesByUserId(userId: Long): Int
+
+    @Query("SELECT COUNT(*) FROM pendingLeaves")
+    suspend fun getPendingLeavesCount(): Int
+
 
 }

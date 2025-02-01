@@ -61,6 +61,7 @@ data class PendingLeaves(
     var appliedDate: Date
 )
 
+
 @Entity(tableName = "queryTable")
 data class RaiseQuery(
     @PrimaryKey(autoGenerate = true)
@@ -71,6 +72,23 @@ data class RaiseQuery(
     val status: Status
 
 )
+@Entity(tableName = "notifications")
+data class Notification(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+    val userId: Long,
+    val title: String,
+    val message: String,
+    val timestamp: Date,
+    val isRead: Boolean = false,
+    val type: NotificationType
+)
+
+enum class NotificationType {
+    TASK_ASSIGNED,
+    LEAVE_STATUS,
+    QUERY_REPLY
+}
 
 enum class UserType{
     ADMIN,
