@@ -11,11 +11,14 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.example.trackprogress.Database.AppDatabase
+import com.example.trackprogress.Database.Notification
+import com.example.trackprogress.Database.NotificationType
 import com.example.trackprogress.Database.RaiseQuery
 import com.example.trackprogress.Database.Status
 import com.example.trackprogress.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class AdminQueryAdapter(var ctx: Context, var res: Int, var list: List<RaiseQuery>): ArrayAdapter<RaiseQuery>(ctx,res,list) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -49,6 +52,16 @@ class AdminQueryAdapter(var ctx: Context, var res: Int, var list: List<RaiseQuer
                     if(adminReply != ""){
                         GlobalScope.launch {
                             raiseQueryDAO.update(RaiseQuery(id, userId, userQuery, adminReply, Status.COMPLETED))
+                            val notificationDao = AppDatabase.getInstance(ctx).notificationDao()
+                            val notification = Notification(
+                                userId = userId,
+                                title = "Query Replied",
+                                message = "Your query has received a response: $adminReply",
+                                timestamp = Date(),
+                                type = NotificationType.QUERY_REPLY
+                            )
+                            notificationDao.insertNotification(notification)
+
                         }
                         dialog.dismiss()
                     }else{
