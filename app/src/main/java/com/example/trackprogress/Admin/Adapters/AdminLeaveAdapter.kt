@@ -26,6 +26,7 @@ class AdminLeaveAdapter(var ctx: Context, var res: Int, var list: List<PendingLe
         val txtOn: TextView = view.findViewById(R.id.txtOn)
         val txtCount: TextView = view.findViewById(R.id.txtCount)
         val btnApprove: Button = view.findViewById(R.id.btnApprove)
+        val btnReject: Button = view.findViewById(R.id.btnReject)
         val data: PendingLeaves = list[position]
         val dateFormat = SimpleDateFormat("yyyy-MM-dd")
         txtFrom.text = dateFormat.format(data.fromDate)
@@ -58,6 +59,24 @@ class AdminLeaveAdapter(var ctx: Context, var res: Int, var list: List<PendingLe
                 }
             }
         }
+        btnReject.setOnClickListener {
+            val leaveId = data.id
+            val id = data.userId
+            val count = data.count
+            GlobalScope.launch {
+                pendingLeavesDAO.deleteLeaveByLeaveId(leaveId)
+                val notificationDao = AppDatabase.getInstance(ctx).notificationDao()
+                val notification = Notification(
+                    userId = id,
+                    title = "Leave Rejected",
+                    message = "Your leave request for $count days from ${dateFormat.format(data.fromDate)} has been rejected",
+                    timestamp = Date(),
+                    type = NotificationType.LEAVE_STATUS
+                )
+                notificationDao.insertNotification(notification)
+            }
+        }
+
         return view
     }
 }
