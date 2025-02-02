@@ -14,6 +14,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.trackprogress.Database.AppDatabase
+import com.example.trackprogress.Database.Notification
+import com.example.trackprogress.Database.NotificationType
 import com.example.trackprogress.Database.PendingLeaves
 import com.example.trackprogress.Employee.Adapters.LeaveAdapter
 import com.example.trackprogress.R
@@ -83,14 +85,33 @@ class ApplyLeaveFragment : Fragment() {
                         val currentDate = stringToDate(getCurrentDate())!!
                         val count = edtLeaveCount.text.toString().toInt()!!
                         pendingLeavesDAO.insert(PendingLeaves(0, id, fromDate, count, currentDate))
+
+                        // Add this new code for notification
+                        val userDao = AppDatabase.getInstance(requireContext()).userDao()
+                        val employee = userDao.getUserById(id)  // Get employee details
+                        val notificationDao = AppDatabase.getInstance(requireContext()).notificationDao()
+
+                        // Create notification for admin
+                        val notification = Notification(
+                            id = 0,
+                            userId = 1000, // Admin's ID
+                            title = "New Leave Application",
+                            message = "${employee?.name} has applied for $count days of leave starting from ${edtFromDate.text}",
+                            timestamp = Date(),
+                            isRead = false,
+                            type = NotificationType.LEAVE_STATUS
+                        )
+                        notificationDao.insertNotification(notification)
+
                         getPendingLeaves(id)
                     }
                 }
-
-            }else{
+            } else {
                 Toast.makeText(context,"Wrong task",Toast.LENGTH_SHORT).show()
             }
         }
+
+
 
         getPendingLeaves(id)
         return view

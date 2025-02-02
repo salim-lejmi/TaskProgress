@@ -9,6 +9,8 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.trackprogress.AuthActivity
+import com.example.trackprogress.Database.AppDatabase
+import com.example.trackprogress.Employee.Functionalities.NotificationsFragment
 import com.example.trackprogress.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -31,9 +33,25 @@ class AdminMainActivity : AppCompatActivity() {
         val usertype = sharedPreferences.getString(getString(R.string.User_Type),getString(R.string.employee))
         getSupportActionBar()?.hide()
         loadFrag(AddEmployeeFragment())
+        val notificationDao = AppDatabase.getInstance(this).notificationDao()
+        notificationDao.getUnreadNotificationCount(1000L).observe(this) { count ->
+            val menuItem = bottomAdminNavMenu.menu.findItem(R.id.adminNotifications)
+            menuItem.setIcon(
+                if (count > 0) R.drawable.ic_notification_unread
+                else R.drawable.ic_notifications
+            )
+        }
 
         bottomAdminNavMenu.setOnItemSelectedListener {
             when(it.itemId){
+                R.id.adminNotifications -> {
+                    val fragment = NotificationsFragment()
+                    val bundle = Bundle()
+                    bundle.putLong("ID", 1000L) // Admin ID
+                    fragment.arguments = bundle
+                    loadFrag(fragment)
+                }
+
                 R.id.dashboard -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.adminFrame, DashboardFragment())
