@@ -10,6 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.trackprogress.Database.AppDatabase
+import com.example.trackprogress.Database.Notification
+import com.example.trackprogress.Database.NotificationType
 import com.example.trackprogress.Database.Status
 import com.example.trackprogress.Database.Task
 import com.example.trackprogress.Database.TaskCompletion
@@ -74,18 +76,28 @@ class TaskDetailFragment : Fragment() {
                 val completionDate = stringToDate(getCurrentDate())!!
                 taskCompletionDAO.insertTaskCompletion(TaskCompletion(0, taskId, userId, completionDate))
 
-                Toast.makeText(requireContext(),"Task status Updated",Toast.LENGTH_SHORT).show()
-                /*
-                var myFrag = requireActivity().supportFragmentManager.beginTransaction()
-                myFrag.replace(R.id.employeeFrame,EmpTaskFragment())
-                myFrag.addToBackStack(null)
-                myFrag.commit()
+                // Add notification for admin
+                val userDao = AppDatabase.getInstance(requireContext()).userDao()
+                val notificationDao = AppDatabase.getInstance(requireContext()).notificationDao()
+                val employee = userDao.getUserById(userId)
 
-                 */
+                val notification = Notification(
+                    id = 0,
+                    userId = 1000, // Admin ID
+                    title = "Task Completed",
+                    message = "${employee?.name} has completed the task: $title",
+                    timestamp = Date(),
+                    isRead = false,
+                    type = NotificationType.TASK_ASSIGNED
+                )
+                notificationDao.insertNotification(notification)
+
+                Toast.makeText(requireContext(),"Task status Updated",Toast.LENGTH_SHORT).show()
             }
         }
 
         return view
+
     }
     fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd")

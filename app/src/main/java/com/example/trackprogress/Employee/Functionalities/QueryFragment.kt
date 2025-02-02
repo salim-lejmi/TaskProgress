@@ -11,11 +11,14 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.example.trackprogress.Database.AppDatabase
+import com.example.trackprogress.Database.Notification
+import com.example.trackprogress.Database.NotificationType
 import com.example.trackprogress.Database.RaiseQuery
 import com.example.trackprogress.Database.Status
 import com.example.trackprogress.Employee.Adapters.QueryAdapter
 import com.example.trackprogress.R
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class QueryFragment : Fragment() {
 
@@ -46,6 +49,21 @@ class QueryFragment : Fragment() {
                 val query = edtQuery.text.toString()!!
                 lifecycleScope.launch {
                     raiseQueryDAO.insert(RaiseQuery(0,id, query,"",Status.PENDING))
+                    val userDao = AppDatabase.getInstance(requireContext()).userDao()
+                    val employee = userDao.getUserById(id)
+                    val notificationDao = AppDatabase.getInstance(requireContext()).notificationDao()
+
+                    val notification = Notification(
+                        id = 0,
+                        userId = 1000, // Admin's ID
+                        title = "New Query Submitted",
+                        message = "${employee?.name} has submitted a new query: ${query.take(50)}${if (query.length > 50) "..." else ""}",
+                        timestamp = Date(),
+                        isRead = false,
+                        type = NotificationType.QUERY_REPLY
+                    )
+                    notificationDao.insertNotification(notification)
+
                 }
             }else{
                 edtQuery.setError("Fill this field")

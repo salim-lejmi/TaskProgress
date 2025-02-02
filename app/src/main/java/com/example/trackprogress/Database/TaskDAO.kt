@@ -11,6 +11,8 @@ import androidx.room.Update
 interface TaskDAO {
     @Insert
     suspend fun insertTask(task: Task)
+    @Query("UPDATE Task SET status = :status WHERE id = :taskId")
+    suspend fun updateTaskStatus(taskId: Long, status: Status)
 
     @Update
     suspend fun updateTask(task: Task)
