@@ -7,4 +7,7 @@
     <color name="button_background">#FF5733</color>
     <color name="secondary_background">#EFEFEF</color>
     <color name="unread_notification">#E3F2FD</color>
+    <color name="primary_background">#F5F5F5</color>
+    <color name="primary_color">#3F51B5</color>
+
 </resources>

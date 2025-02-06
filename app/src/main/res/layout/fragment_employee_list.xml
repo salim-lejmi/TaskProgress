@@ -6,7 +6,7 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background_primary"
+    android:background="@color/white"
     tools:context=".Admin.EmployeeListFragment">
 
     <!-- AppBar with a Material Toolbar -->
